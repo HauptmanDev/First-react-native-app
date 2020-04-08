@@ -1,11 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
-import {Button, Text, View} from "react-native";
+import {Button, Text, View, Data} from "react-native";
+import {Navbar} from "./src/Navbar";
+import {TodoCreator} from "./src/TodoCreator";
+import {Todo} from "./src/Todo";
+
 
 export default function App() {
+    const [todos, setTodo] = useState([]);
+    const addTodo = (title) => {
+        const newTodo = {
+            // id: Data.now().toString(),
+            title: title
+        };
+        setTodo([...todos, newTodo])
+    };
     return (
         <View style={styles.container}>
-            <Text style={styles.greeting}>Hello Nat!!</Text>
+            <Navbar title={'Todo App'}/>
+            <View style={styles.content}>
+                <TodoCreator addTodo={addTodo}/>
+                <View>
+                    {todos.map(el => <Todo title={el.title}/>)}
+                </View>
+            </View>
         </View>
     );
 }
@@ -13,12 +31,10 @@ export default function App() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'red',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: 'white',
     },
-    greeting: {
-        color: 'white',
-        fontSize: 50,
+    content: {
+        paddingHorizontal: 30,
+        paddingVertical: 20,
     }
 });
