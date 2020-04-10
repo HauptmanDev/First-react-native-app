@@ -1,40 +1,44 @@
 import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {Button, Text, View, Data} from "react-native";
+import {View, StyleSheet, FlatList} from "react-native";
 import {Navbar} from "./src/Navbar";
 import {TodoCreator} from "./src/TodoCreator";
 import {Todo} from "./src/Todo";
 
 
 export default function App() {
-    const [todos, setTodo] = useState([]);
-    const addTodo = (title) => {
+    const [todos, setTodos] = useState([]);
+    const addTodo = newTitle => {
         const newTodo = {
-            // id: Data.now().toString(),
-            title: title
+            id: Date.now().toString(),
+            title: newTitle,
         };
-        setTodo([...todos, newTodo])
+        setTodos(prev => [...prev, newTodo])
+    };
+    const removeTodo = (id) => {
+            setTodos(prev => prev.filter(el => {
+                if (id !== el.id) return el.id
+            }))
     };
     return (
-        <View style={styles.container}>
+        <View>
             <Navbar title={'Todo App'}/>
             <View style={styles.content}>
-                <TodoCreator addTodo={addTodo}/>
-                <View>
-                    {todos.map(el => <Todo title={el.title}/>)}
-                </View>
+                <TodoCreator onSubmit={addTodo}/>
+
+                <FlatList
+                    data={todos}
+                    keyExtractor={item => item.id}
+                    renderItem={({item}) => <Todo todo={item} removeTodo={removeTodo}/>}
+                />
             </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-    },
     content: {
         paddingHorizontal: 30,
         paddingVertical: 20,
+        color: '#000',
     }
 });

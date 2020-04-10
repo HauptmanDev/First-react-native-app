@@ -1,25 +1,32 @@
-import React, {useState} from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import React from 'react'
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 
 export const Todo = (props) => {
     return (
-        <View style={styles.todo}>
-            <Text>{props.title}</Text>
-        </View>
+        <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => alert(props.todo.title)}
+            onLongPress={() => props.removeTodo(props.todo.id)}>
+            <View style={styles.todo}>
+                <Text style={styles.title}>{props.todo.title}</Text>
+            </View>
+        </TouchableOpacity>
     )
 };
 
 const styles = StyleSheet.create({
     todo: {
-        height: 80,
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
+        height: 35,
+        flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#3949ab',
-        paddingBottom: 10,
+        borderWidth: 0.5,
+        borderColor: '#3949ab',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 10,
     },
     title: {
-        color: 'black',
+        color: '#000',
         fontSize: 20,
     },
 });

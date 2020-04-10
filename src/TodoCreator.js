@@ -1,19 +1,20 @@
 import React, {useState} from 'react'
-import {View, Text, StyleSheet, TextInput, Button} from 'react-native'
+import {View, StyleSheet, TextInput, Button, Alert} from 'react-native'
 
 export const TodoCreator = (props) => {
     const [title, setTitle] = useState('');
-    const setValue = (e) => {
-        setTitle(e.currentTarget.value)
-    };
-    const addTodo = () => {
-        props.addTodo(title);
-        setTitle('')
+    const pressHandler = () => {
+        if (title.trim()) {
+            props.onSubmit(title);
+            setTitle('')
+        } else {
+            Alert.alert('Ошибка','Не введено имя')
+        }
     };
     return (
         <View style={styles.creator}>
-            <TextInput onChange={setValue} style={styles.input}/>
-            <Button onPress={addTodo} style={styles.button} title='Добавить'/>
+            <TextInput onChangeText={setTitle} style={styles.input} value={title} placeholder='Введите имя' autocorrect={false} keyboardType='default'/>
+            <Button onPress={pressHandler} style={styles.button} title='Добавить'/>
         </View>
     )
 };
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: '#fff',
-        marginTop: 10,
+        marginBottom: 15,
     },
     input: {
         width: '70%',
